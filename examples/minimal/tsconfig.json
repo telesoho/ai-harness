@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/agent" },
+    { "path": "../../packages/core" },
+    { "path": "../../packages/llm" },
+    { "path": "../../packages/llm-deepseek" },
+    { "path": "../../packages/tools" },
+    { "path": "../../packages/context" },
+    { "path": "../../packages/config" }
+  ]
+}

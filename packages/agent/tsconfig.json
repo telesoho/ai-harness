@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../core" },
+    { "path": "../llm" },
+    { "path": "../tools" },
+    { "path": "../context" },
+    { "path": "../session" },
+    { "path": "../config" }
+  ]
+}

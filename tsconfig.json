@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/llm" },
+    { "path": "./packages/llm-retry" },
+    { "path": "./packages/llm-deepseek" },
+    { "path": "./packages/tools" },
+    { "path": "./packages/context" },
+    { "path": "./packages/session" },
+    { "path": "./packages/config" },
+    { "path": "./packages/agent" },
+    { "path": "./apps/cli" }
+  ]
+}

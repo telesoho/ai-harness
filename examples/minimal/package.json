@@ -1,0 +1,20 @@
+{
+  "name": "@ai-harness/example-minimal",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@ai-harness/agent": "workspace:*",
+    "@ai-harness/core": "workspace:*",
+    "@ai-harness/llm": "workspace:*",
+    "@ai-harness/llm-deepseek": "workspace:*",
+    "@ai-harness/tools": "workspace:*",
+    "@ai-harness/context": "workspace:*",
+    "@ai-harness/config": "workspace:*"
+  }
+}
