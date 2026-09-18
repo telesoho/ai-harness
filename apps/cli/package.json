@@ -23,5 +23,8 @@
     "@ai-harness/agent": "workspace:*",
     "@ai-harness/core": "workspace:*",
     "@ai-harness/config": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0"
   }
 }

@@ -29,6 +29,10 @@ importers:
       '@ai-harness/core':
         specifier: workspace:*
         version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.14.0
+        version: 20.19.43
 
   examples/minimal:
     dependencies:
