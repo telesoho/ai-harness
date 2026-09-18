@@ -11,6 +11,8 @@
 | 03 | [tools-and-loop](./03-tools-and-loop/) | 工具调用 + while 循环 | `packages/agent/src/agent.ts` 解锁 |
 | 04 | [production-shape](./04-production-shape/) | 为什么 lessons 里的代码要拆成 10 个包 | `AGENTS.md` 复习 |
 
+每课完成后仓库会打 annotated tag `lesson-NN`（见 [提交约定](../AGENTS.md#提交约定)），可 `git checkout lesson-01` 回到该章末态。
+
 ## 学习原则
 
 1. **先跑通，再读实现**：每章从 `pnpm run` 一个能工作的命令开始。

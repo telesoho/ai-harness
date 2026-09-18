@@ -68,6 +68,8 @@ agent ◄── llm-retry ◄── llm
 用 `type(scope): why`（feat/fix/docs/test/chore/refactor）。
 scope 用包名，或 `lessons` / `docs`。一次一件事；lesson、lockfile、编辑器配置不要混提交。
 
+每完成一课，在该课**最后一次实现提交**上打 annotated tag：`lesson-NN`（两位数字，与 `lessons/NN-*` 目录编号一致），说明用课程标题（如 `lesson 01: hello-agent`）。不要把 tag 打在后续无关提交上；已打出的 tag 不要移动或覆盖。
+
 ## 当前未镜像的 DSH 关键包
 
 按"教学价值"排序（高 → 低）：
