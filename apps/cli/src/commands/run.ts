@@ -30,11 +30,10 @@ export async function cmdRun(args: string[]): Promise<number> {
     { role: 'user', content: [{ type: 'text', text: prompt }] },
   ];
 
-  let text = '';
   for await (const event of client.complete({ model: config.model, messages })) {
     switch (event.type) {
       case 'text_delta':
-        text += event.delta;
+        process.stdout.write(event.delta);
         break;
       case 'error':
         console.error(event.error);
@@ -44,6 +43,6 @@ export async function cmdRun(args: string[]): Promise<number> {
     }
   }
 
-  console.log(text);
+  console.log();
   return 0;
 }
