@@ -11,7 +11,7 @@ Usage:
 
 Commands:
   init       Initialize a workspace config (placeholder)
-  run <msg>  Run one prompt against DeepSeek (no tools, print once)
+  run <msg>  Run one prompt through the agent loop (echo tool enabled)
   repl       Start an interactive REPL (placeholder)
 
 Examples:

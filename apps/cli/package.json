@@ -23,7 +23,9 @@
     "@ai-harness/agent": "workspace:*",
     "@ai-harness/core": "workspace:*",
     "@ai-harness/config": "workspace:*",
-    "@ai-harness/llm-deepseek": "workspace:*"
+    "@ai-harness/context": "workspace:*",
+    "@ai-harness/llm-deepseek": "workspace:*",
+    "@ai-harness/tools": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.14.0"

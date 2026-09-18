@@ -42,16 +42,16 @@ DSH 的以下包在镜像中**完全不存在**，仅在 `docs/dsh-tour.md` 标�
 - **镜像**：统一在 `packages/tools/` 暴露
 - **回到 DSH**：搜索 `tool.ts` 在 DSH 中的多处出现。
 
-## 6. agent 循环的"假实现"
+## 6. agent 循环简化
 
-- **镜像**：`packages/agent/src/agent.ts` 的 `runAgent` 函数体是 `throw new Error('TODO: see lessons/03')`
-- **DSH**：`packages/code-runtime/src/runtime.ts` 是完整实现
-- **为什么**：agent 循环是教学核心，下一步才实现。
-- **回到 DSH**：必须读 DSH 完整版才能理解真实复杂度（hook、权限、并发、超时）。
+- **镜像**：`packages/agent/src/agent.ts` 的 `runAgent` 是串行 while-loop：stream → invoke → 回灌 `tool_result` → 直到 `end_turn`
+- **DSH**：`packages/core/agent-loop/src/agent.ts` 含 inbox、hook、权限、并行工具调度、超时、session 日志
+- **为什么**：教学只需看清"工具结果如何成为下一轮消息"
+- **回到 DSH**：读 `packages/core/agent-loop/src/agent.ts` 与 `tool-calls.ts`
 
 ## 7. CLI 命令简化
 
-- **镜像**：`aih run` / `aih repl` / `aih init` 三个占位命令
+- **镜像**：`aih run` 走 agent 循环；`aih repl` / `aih init` 仍占位
 - **DSH**：`dsh` / `claude` ~20 个命令，含 `--resume` / `--fork` / `--print` 等
 - **回到 DSH**：读 `apps/cli/src/commands/` 下的完整命令树。
 

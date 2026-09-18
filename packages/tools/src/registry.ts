@@ -10,12 +10,8 @@ export interface ToolRegistry {
   get(name: string): Tool | undefined;
   list(): ToolDefinition[];
   /**
-   * 调用一个工具。DSH 在 `invoke` 内部会做：
-   * - permission 检查（`guard` 包）
-   * - 参数校验（zod）
-   * - 超时控制
-   * - 结果格式化
-   * 本镜像只暴露签名。
+   * Run a registered tool. DSH also does permission, zod validation, and
+   * timeouts; this mirror looks up `name` and calls `execute`.
    */
   invoke(name: string, args: unknown, ctx: ToolContext): Promise<ToolResult>;
 }
@@ -44,6 +40,11 @@ export class InMemoryToolRegistry implements ToolRegistry {
     if (!tool) {
       return { content: `tool not found: ${name}`, isError: true };
     }
-    return tool.execute(args, ctx);
+    try {
+      return await tool.execute(args, ctx);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      return { content: message, isError: true };
+    }
   }
 }

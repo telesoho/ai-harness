@@ -26,12 +26,18 @@ importers:
       '@ai-harness/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@ai-harness/context':
+        specifier: workspace:*
+        version: link:../../packages/context
       '@ai-harness/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@ai-harness/llm-deepseek':
         specifier: workspace:*
         version: link:../../packages/llm-deepseek
+      '@ai-harness/tools':
+        specifier: workspace:*
+        version: link:../../packages/tools
     devDependencies:
       '@types/node':
         specifier: ^20.14.0

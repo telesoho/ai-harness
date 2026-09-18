@@ -14,13 +14,13 @@
 | `packages/llm` | `packages/llm/llm` | LLM 客户端接口与通用类型 | ✅ | ⚠️ 接口 + 简化 retry |
 | `packages/llm-retry` | `packages/llm/llm-retry` | 重试策略接口 | ✅ | ❌ 仅接口 |
 | `packages/llm-deepseek` | `packages/llm/llm-deepseek` | DeepSeek provider 适配 | ✅ | ⚠️ fetch + SSE（无 retry / allowlist / 计费） |
-| `packages/tools` | 散落（`core/tools`+`shell`+`fs`） | 工具协议 + 内置工具骨架 | ✅ | ❌ 仅接口 |
+| `packages/tools` | 散落（`core/tools`+`shell`+`fs`） | 工具协议 + 内置工具骨架 | ✅ | ⚠️ `echo` 可执行；其余 6 个 TODO |
 | `packages/context` | `packages/context` + `packages/compaction` | 消息存储 + 压缩接口 | ✅ | ❌ 仅接口 |
 | `packages/session` | `packages/session` | 会话持久化接口 | ✅ | ❌ 仅接口 |
 | `packages/config` | `packages/settings` + `packages/preset` | 配置加载接口 | ✅ | ❌ 仅接口 |
-| `packages/agent` | `packages/code-runtime` | Agent 主循环 | ✅ | ❌ 仅接口 |
-| `apps/cli` | `apps/cli` | CLI 进程入口与命令树 | ✅ | ⚠️ `run` 可调用 DeepSeek；init/repl 仍占位 |
-| `examples/minimal` | — | "hello agent" 示例 | — | ⚠️ 占位 |
+| `packages/agent` | `packages/code-runtime` | Agent 主循环 | ✅ | ⚠️ 简化 while-loop（无 hook / 权限 / 并行） |
+| `apps/cli` | `apps/cli` | CLI 进程入口与命令树 | ✅ | ⚠️ `run` 走 `runAgent` + echo；init/repl 仍占位 |
+| `examples/minimal` | — | "hello agent" 示例 | — | ⚠️ 可跑 echo 循环 |
 
 ## 依赖图（必须保持单向）
 
@@ -41,7 +41,7 @@ agent ◄── llm-retry ◄── llm
 |---|---|---|
 | 加一个新模型（OpenAI / Anthropic / 本地） | 新建 `packages/llm-<name>/`，实现 `LLMClient` | 参考 `packages/llm-deepseek/` |
 | 改 LLM 客户端接口 | `packages/llm/src/client.ts` | ⚠️ 同步改 DSH |
-| 加一个内置工具 | `packages/tools/src/builtin/<name>.ts` | 镜像 6 个示例：`read_file` / `write_file` / `edit_file` / `run_command` / `grep` / `list_dir` |
+| 加一个内置工具 | `packages/tools/src/builtin/<name>.ts` | 已实现 `echo`；其余 6 个示例：`read_file` / `write_file` / `edit_file` / `run_command` / `grep` / `list_dir` |
 | 改 agent 循环 | `packages/agent/src/agent.ts` | ⚠️ 必须对照 DSH `packages/code-runtime/src/runtime.ts` |
 | 改上下文压缩策略 | `packages/context/src/compaction.ts` | DSH 同位置有完整实现 |
 | 加 CLI 命令 | `apps/cli/src/commands/<name>.ts` + 在 `main.ts` 注册 | DSH `apps/cli/src/commands/` 有 ~20 个 |

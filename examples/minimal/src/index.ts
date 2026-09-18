@@ -4,12 +4,12 @@
  * 这个示例展示"完整跑通一次 agent"的代码形状。代码里的注释解释了每一行
  * 对应 DSH 的哪一部分。
  *
- * 当前所有 `await` 的实际行为都是抛 TODO。请按 lessons/01 → 04 顺序解锁。
+ * lesson 03 起 `runAgent` 会真正循环；init/repl 与 6 个 FS/shell 工具仍是 TODO。
  */
 
 import { runAgent } from '@ai-harness/agent';
 import { DeepSeekClient } from '@ai-harness/llm-deepseek';
-import { InMemoryToolRegistry } from '@ai-harness/tools';
+import { echoTool, InMemoryToolRegistry } from '@ai-harness/tools';
 import { InMemoryMessageStore } from '@ai-harness/context';
 import { mergeConfig, loadFromEnv } from '@ai-harness/config';
 
@@ -23,8 +23,9 @@ async function main(): Promise<void> {
     apiKey: config.apiKey,
   });
 
-  // 3) 准备工具表（当前为空；lesson 07 会加入 6 个内置工具）。
+  // 3) 准备工具表。lesson 03 解锁 echo；lesson 07 再加入 6 个内置工具。
   const tools = new InMemoryToolRegistry();
+  tools.register(echoTool);
 
   // 4) 准备消息存储。
   const context = new InMemoryMessageStore();

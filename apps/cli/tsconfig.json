@@ -9,6 +9,8 @@
     { "path": "../../packages/agent" },
     { "path": "../../packages/core" },
     { "path": "../../packages/config" },
-    { "path": "../../packages/llm-deepseek" }
+    { "path": "../../packages/context" },
+    { "path": "../../packages/llm-deepseek" },
+    { "path": "../../packages/tools" }
   ]
 }
