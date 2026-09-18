@@ -62,6 +62,11 @@ agent ◄── llm-retry ◄── llm
 - 每个函数体为 `throw new Error('TODO: see lessons/0X')` 时，`0X` 是对应教学章节
 - 任何"为教学特意简化"的实现，必须在 `docs/divergence-log.md` 登记
 
+## 提交约定
+
+用 `type(scope): why`（feat/fix/docs/test/chore/refactor）。
+scope 用包名，或 `lessons` / `docs`。一次一件事；lesson、lockfile、编辑器配置不要混提交。
+
 ## 当前未镜像的 DSH 关键包
 
 按"教学价值"排序（高 → 低）：
