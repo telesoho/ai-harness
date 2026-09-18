@@ -12,7 +12,6 @@ import { DeepSeekClient } from '@ai-harness/llm-deepseek';
 import { InMemoryToolRegistry } from '@ai-harness/tools';
 import { InMemoryMessageStore } from '@ai-harness/context';
 import { mergeConfig, loadFromEnv } from '@ai-harness/config';
-import type { AgentEvent } from '@ai-harness/core';
 
 async function main(): Promise<void> {
   // 1) 加载配置：env > 默认。DSH 在 `packages/settings` 里做这件事。
@@ -42,8 +41,25 @@ async function main(): Promise<void> {
   // 6) 消费事件流。DSH 的 CLI / Web / Desktop 各自有不同的渲染层。
   for await (const event of stream) {
     switch (event.type) {
+      case 'message_start':
+        console.log(`[message_start] ${event.model} ${event.messageId}`);
+        break;
       case 'text_delta':
         process.stdout.write(event.delta);
+        break;
+      case 'thinking_delta':
+        process.stderr.write(event.delta);
+        break;
+      case 'tool_call_delta':
+        process.stdout.write(
+          `[tool_call_delta] ${event.id}${event.name !== undefined ? ` ${event.name}` : ''} ${event.argsDelta}`,
+        );
+        break;
+      case 'tool_executing':
+        console.log(`\n[tool_executing] ${event.name} ${event.callId}`);
+        break;
+      case 'tool_result':
+        console.log(`[tool_result] ${event.callId}${event.isError ? ' error' : ''}`, event.result);
         break;
       case 'done':
         console.log('\n[done]', event.stopReason, event.usage);
@@ -51,10 +67,10 @@ async function main(): Promise<void> {
       case 'error':
         console.error('\n[error]', event.error);
         break;
-      default:
-        // 其他事件当前不打印。lesson 02 会加入完整事件日志。
-        const _e: AgentEvent = event;
-        void _e;
+      default: {
+        const _never: never = event;
+        void _never;
+      }
     }
   }
 }

@@ -5,8 +5,8 @@ import type { Message } from '@ai-harness/core';
 import { DeepSeekClient } from '@ai-harness/llm-deepseek';
 
 /**
- * One user prompt → one complete model reply. Lesson 02 switches this to
- * token-by-token printing; lesson 03 routes through `runAgent` and tools.
+ * One user prompt → streamed model reply. Each `text_delta` is written
+ * immediately; lesson 03 routes through `runAgent` and tools.
  */
 export async function cmdRun(args: string[]): Promise<number> {
   const prompt = args.join(' ').trim();

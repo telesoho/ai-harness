@@ -2,13 +2,13 @@
 
 > **目标**：把"一次性完整响应"改为"逐 token 流式"，并在终端逐字打印。
 
-## 跑通命令（待实现）
+## 跑通命令
 
 ```bash
 pnpm aih run "写一首五言绝句"
 ```
 
-期望输出：
+需要环境变量 `DEEPSEEK_API_KEY`（可选 `DEEPSEEK_BASE_URL`、`DEEPSEEK_MODEL`）。每个 `text_delta` 立刻写出，所以字会一个接一个出现，而不是等整首诗拼齐。措辞随模型而变，例如：
 
 ```
 床 前 明 月 光，
@@ -17,10 +17,14 @@ pnpm aih run "写一首五言绝句"
 低 头 思 故 乡。
 ```
 
+`aih run` 只把 `text_delta` 打到 stdout；`thinking_delta` / `usage` / `done` 等其它流式事件在 `examples/minimal` 里按类型打印。
+
 ## 本章解锁的镜像代码
 
-- `packages/llm-deepseek/src/translate.ts` —— `translateChunk()` 实际起作用
-- `apps/cli/src/commands/run.ts` —— 把拼齐后一次 `console.log` 改成每个 `text_delta` 立刻 `process.stdout.write`
+- `packages/llm-deepseek/src/translate.ts` —— `translateChunk()` 把 SSE JSON 译成 `text_delta` / `thinking_delta` / `tool_call_delta` / `done` / `usage`
+- `packages/llm-deepseek/src/adapter.ts` —— 行缓冲读 `data:` 行，每行交给 `translateChunk` 再 `yield`
+- `apps/cli/src/commands/run.ts` —— 每个 `text_delta` 立刻 `process.stdout.write`
+- `examples/minimal/src/index.ts` —— 按 `AgentEvent` 类型逐条打印
 
 ## 本章涉及的 DSH 源
 
@@ -28,25 +32,23 @@ pnpm aih run "写一首五言绝句"
 - [`packages/llm/llm-deepseek/src/translate.ts`](https://example.com/dsh/packages/llm/llm-deepseek/src/translate.ts) —— chunk → event
 - [`packages/core/src/event.ts`](https://example.com/dsh/packages/core/src/event.ts) —— `AgentEvent` 判别联合
 
-## 占位代码块
+## 实现对照
 
 ```ts
-// 当前位于 packages/llm-deepseek/src/translate.ts
-// 已经写好。本章关键是把它接到 fetch 的 SSE 上：
-const body = response.body!;
-const reader = body.getReader();
-const decoder = new TextDecoder();
-let buffer = '';
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-  buffer += decoder.decode(value, { stream: true });
-  for (const line of buffer.split('\n')) {
-    if (!line.startsWith('data:')) continue;
-    const json = line.slice(5).trim();
-    if (json === '[DONE]') return;
-    const chunk: WireChunk = JSON.parse(json);
-    for (const ev of translateChunk(chunk)) yield ev;
-  }
+// packages/llm-deepseek/src/adapter.ts
+for await (const payload of readSseData(response.body)) {
+  if (payload === SSE_DONE) return;
+  const chunk = JSON.parse(payload) as WireChunk;
+  for (const event of translateChunk(chunk)) yield event;
 }
+
+// packages/llm-deepseek/src/translate.ts
+if (d.content) events.push({ type: 'text_delta', delta: d.content });
+if (d.reasoning_content) events.push({ type: 'thinking_delta', delta: d.reasoning_content });
+
+// apps/cli/src/commands/run.ts
+for await (const event of client.complete({ model, messages })) {
+  if (event.type === 'text_delta') process.stdout.write(event.delta);
+}
+console.log();
 ```
