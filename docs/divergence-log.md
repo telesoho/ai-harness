@@ -66,11 +66,12 @@ DSH 的以下包在镜像中**完全不存在**，仅在 `docs/dsh-tour.md` 标�
 - **DSH**：`packages/context` 与 `packages/compaction` 分开
 - **镜像**：合并到 `packages/context`，compaction 仅占位接口
 
-## 10. 无实际 LLM HTTP 调用
+## 10. LLM HTTP 调用被简化
 
-- **镜像**：`DeepSeekClient.complete()` 函数体 throw
-- **DSH**：真实 `fetch()` + SSE 解析
-- **为什么**：HTTP 调试是工程而非概念；先理解接口形状再去看 wire 解析。
+- **镜像**：`DeepSeekClient.complete()` 做一次 `fetch` + 行缓冲 SSE + `translateChunk`；无 retry、egress allowlist、计费
+- **DSH**：`eventsource-parser` 分帧、错误分类、credential 协商、request pricing
+- **为什么**：lesson 01 只需要"问一句、答一句"；生产路径的工程细节留在 DSH
+- **回到 DSH**：读 `packages/llm/llm-deepseek/src/adapter.ts` 与 `sse.ts`
 
 ## 11. 类型命名一致性
 

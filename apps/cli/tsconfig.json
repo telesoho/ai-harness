@@ -8,6 +8,7 @@
   "references": [
     { "path": "../../packages/agent" },
     { "path": "../../packages/core" },
-    { "path": "../../packages/config" }
+    { "path": "../../packages/config" },
+    { "path": "../../packages/llm-deepseek" }
   ]
 }

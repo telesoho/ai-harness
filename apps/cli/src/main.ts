@@ -11,7 +11,7 @@ Usage:
 
 Commands:
   init       Initialize a workspace config (placeholder)
-  run <msg>  Run a single task (placeholder)
+  run <msg>  Run one prompt against DeepSeek (no tools, print once)
   repl       Start an interactive REPL (placeholder)
 
 Examples:
@@ -19,7 +19,7 @@ Examples:
   aih run "what is an LLM?"
   aih repl
 
-All commands currently print a TODO pointer and exit 0.
+run requires DEEPSEEK_API_KEY. init and repl still print a TODO.
 See docs/reading-order.md and lessons/ for what to read next.
 `;
 

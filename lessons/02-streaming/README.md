@@ -20,7 +20,7 @@ pnpm aih run "写一首五言绝句"
 ## 本章解锁的镜像代码
 
 - `packages/llm-deepseek/src/translate.ts` —— `translateChunk()` 实际起作用
-- `apps/cli/src/commands/run.ts` —— 改写为 `for await` 消费事件
+- `apps/cli/src/commands/run.ts` —— 把拼齐后一次 `console.log` 改成每个 `text_delta` 立刻 `process.stdout.write`
 
 ## 本章涉及的 DSH 源
 

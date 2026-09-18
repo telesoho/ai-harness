@@ -29,6 +29,9 @@ importers:
       '@ai-harness/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@ai-harness/llm-deepseek':
+        specifier: workspace:*
+        version: link:../../packages/llm-deepseek
     devDependencies:
       '@types/node':
         specifier: ^20.14.0

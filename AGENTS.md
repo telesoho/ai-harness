@@ -13,24 +13,25 @@
 | `packages/core` | `packages/core` | 协议无关的领域类型（消息/事件/工具/错误） | ✅ | ✅（仅类型） |
 | `packages/llm` | `packages/llm/llm` | LLM 客户端接口与通用类型 | ✅ | ⚠️ 接口 + 简化 retry |
 | `packages/llm-retry` | `packages/llm/llm-retry` | 重试策略接口 | ✅ | ❌ 仅接口 |
-| `packages/llm-deepseek` | `packages/llm/llm-deepseek` | DeepSeek provider 适配 | ✅ | ❌ 仅 wire 类型 + 占位 |
+| `packages/llm-deepseek` | `packages/llm/llm-deepseek` | DeepSeek provider 适配 | ✅ | ⚠️ fetch + SSE（无 retry / allowlist / 计费） |
 | `packages/tools` | 散落（`core/tools`+`shell`+`fs`） | 工具协议 + 内置工具骨架 | ✅ | ❌ 仅接口 |
 | `packages/context` | `packages/context` + `packages/compaction` | 消息存储 + 压缩接口 | ✅ | ❌ 仅接口 |
 | `packages/session` | `packages/session` | 会话持久化接口 | ✅ | ❌ 仅接口 |
 | `packages/config` | `packages/settings` + `packages/preset` | 配置加载接口 | ✅ | ❌ 仅接口 |
 | `packages/agent` | `packages/code-runtime` | Agent 主循环 | ✅ | ❌ 仅接口 |
-| `apps/cli` | `apps/cli` | CLI 进程入口与命令树 | ✅ | ⚠️ main + 3 命令占位 |
+| `apps/cli` | `apps/cli` | CLI 进程入口与命令树 | ✅ | ⚠️ `run` 可调用 DeepSeek；init/repl 仍占位 |
 | `examples/minimal` | — | "hello agent" 示例 | — | ⚠️ 占位 |
 
 ## 依赖图（必须保持单向）
 
 ```
 apps/cli ──► agent ──► core ◄── llm ◄── llm-deepseek
-                  │
-                  ├──► tools
-                  ├──► context
-                  ├──► session
-                  └──► config
+ │
+ ├──► tools
+ ├──► context
+ ├──► session
+ ├──► config
+ └──► llm-deepseek
 agent ◄── llm-retry ◄── llm
 ```
 
